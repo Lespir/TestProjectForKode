@@ -1,0 +1,53 @@
+{% extends "default.html" %}
+{% block content %}
+{% load static %}
+<header class="">
+  <nav class="navbar navbar-expand-md sticky-top">
+    <div class="container-fluid">
+      <a href="{% url 'base' %}" class="navbar-brad"><img id="img" src="{% static 'image/Logo.svg' %}"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+        <span class="navbar-toggler-icon text-white">&#9776;</span>
+      </button>
+        <div class="collapse navbar-collapse mt-2" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                  <a href="{% url 'base' %}" class="nav-link my_tekst text-white">Market</a>
+              </li>
+              <li class="nav-item active">
+                  <a href="{% url 'index' %}" class="nav-link my_tekst text-white">Manage Order</a>
+              </li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item mb-2">
+              <a href="{% url 'logout' %}">
+                <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Log out</button>
+              </a>
+            </li>
+            <li class="nav-item mb-2">
+              <a href="{% url 'panel' %}">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"><i class="fas fa-user"></i></button>
+              </a>
+            </li>
+          </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<main style="margin: 10%;">
+    <div class="bg-dark rounded-lg" style="width: 95%; margin: 50px auto; max-width: 500px;">
+        <div class="p-2 text-white" style="width: 95%; margin: 50px auto;">
+          <h4 class="text-center mb-4 text-white"> Product adding panel </h4>
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input name="file" type="file">
+            <input name="title" placeholder="Name of product" class="form-control mt-2" required>
+            <textarea name="description" placeholder="Description" class="form-control mt-2" required></textarea>
+            <input name="count" placeholder="Count" class="form-control mt-2" required>
+            <button type="submit" class="btn btn-success mt-2">Save</button>
+          </form>
+          <div class="text-success">{{ cool_mess }}</div>
+          <div class="text-danger">{{ error }}</div>
+        </div>
+    </div>
+</main>
+{% endblock %}

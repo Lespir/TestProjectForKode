@@ -1,31 +1,6 @@
+{% extends "default.html" %}
+{% block content %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <title>Informatics Project</title>
-    <link rel="shortcut icon" href="{% static 'image/icon.ico' %}">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap-4.4.1-dist/css/bootstrap.min.css' %}">
-  </head>
-  <body style="background-color:gray;">
-    <header class="">
-      <nav class="navbar navbar-expand-md bg-dark sticky-top">
-        <div class="container-fluid">
-          <a href="{% url 'index' %}" class="navbar-brad"><img id="im" src="{% static 'image/icon.png' %}"></a>
-          <div class="collapse navbar-collapse mt-2" id="navbarResponsive">
-            <ul class="navbar-nav m-auto">
-              <li class="nav-item active mb-2">
-                <a href="{% url 'base' %}" class="nav-link text-white">О проекте</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
     <main style="padding: 13%;">
       <div class="bg-dark rounded-lg" style="width: 95%; margin: 50px auto; max-width: 500px;">
         <div class="p-2" style="width: 95%; margin: 50px auto;">
@@ -39,21 +14,14 @@
               <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
             </div>
             <p class="text-danger">{{ error }}</p>
-            <button type="submit" class="btn btn-success">Войти</button>
+            <div class="form-inline">
+              <button type="submit" class="btn btn-success">Log in</button>
+              <div class="ml-auto">
+                <a class="btn btn-primary" href="{% url 'firsttime' %}">First time</a>
+              </div>
+            </div>
           </form>
         </div>
       </div>
     </main>
-    <footer class="container-fluid bg-dark p-3 text-white">
-      <div class="container">
-        <div class="row padding text-center">
-          <div class="col-12">
-            <p>&copy; Project by Lespir and Demezy</p>
-          </div>
-        </div>
-      </div>
-    </footer>
-    <script src="../static/requirements/jquery.min.js"></script>
-    <script src="../static/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
-  </body>
-</html>
+{% endblock %}

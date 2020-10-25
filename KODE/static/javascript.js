@@ -1,5 +1,19 @@
 // Функция для ищменения яркости изображения
 
+$(document).ready(function(){
+    $('.count').prop('disabled', true);
+    $(document).on('click','.plus',function(){
+        $('.count').val(parseInt($('.count').val()) + 1 );
+    });
+    $(document).on('click','.minus',function(){
+        $('.count').val(parseInt($('.count').val()) - 1 );
+            if ($('.count').val() == 0) {
+                $('.count').val(1);
+            }
+        });
+});
+
+
 var range=document.querySelectorAll('#playground-value-input');
 function changeHandler(event){
   var px=(this.value==0)?'':'%';
