@@ -8,7 +8,7 @@
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <span class="navbar-toggler-icon text-white">&#9776;</span>
           </button>
-            <div class="collapse navbar-collapse mt-2" id="navbarResponsive">
+            <div align="center" class="collapse navbar-collapse mt-2" id="navbarResponsive">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item active mb-2">
                   <a href="{% url 'base' %}" class="nav-link my_tekst text-white">Market</a>
@@ -31,31 +31,39 @@
       </nav>
     </header>
     <main class="p-5">
-      {% for i in l %}
-      <form method="POST" class="form-inline bg-dark mt-2 p-4 text-white rounded">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{% url 'logout' %}">Order Name</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav m-auto">
-          <li class="nav-item">
-            Order number
-          </li>
-        </ul>
-          <select id="inputState" class="form-control" style="width: 20%;">
-            <option value="" disabled selected hidden>Please Choose...</option>
-            <option>Вася</option>
-            <option>Петя</option>
-          </select>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item mb-2">
-            <a href="{% url 'panel' %}">
-              <button class="btn btn-outline-success" type="submit">Confirm</button>
-            </a>
-          </li>
-        </ul>
-      </form>
+      <div class="mx-auto container my-4 text-white rounded text-center bg-dark p-4 row">
+        <div class="container m-1 col-md">
+          <p>№</p>
+        </div>
+        <div class="container m-1 col-md">
+             <p>Name of user</p>
+        </div>
+        <div class="container m-1 col-md">
+             <p>Phone</p>
+        </div>
+        <div class="container m-1 col-md">
+             <p>Address</p>
+        </div>
+      </div>
+      {% for order in orders %}
+      <div class="container">
+        <a class="text-white" href="/order/{{ order.id }}">
+          <div class="my-2 mx-auto container manage_order text-white rounded text-center p-4 row {% if order.courier != '0' %} bg-primary {% else %} bg-dark {% endif %}">
+            <div class="container m-1 col-md">
+              <p>№ {{ order.id }}</p>
+            </div>
+            <div class="container m-1 col-md">
+                 <p>{{ order.name_of_user }}</p>
+            </div>
+            <div class="container m-1 col-md">
+                 <p>{{ order.phone }}</p>
+            </div>
+            <div class="container m-1 col-md">
+                 <p>{{ order.address }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
       {% endfor %}
     </main>
 {% endblock %}

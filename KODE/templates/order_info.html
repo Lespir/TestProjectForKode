@@ -1,0 +1,93 @@
+{% extends "default.html" %}
+{% block content %}
+{% load static %}
+    <header>
+      <nav class="navbar navbar-expand-md sticky-top">
+        <div class="container-fluid">
+          <a href="{% url 'base' %}" class="navbar-brad"><img id="im" src="{% static 'image/Logo.svg' %}"></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <span class="navbar-toggler-icon text-white">&#9776;</span>
+          </button>
+            <div align="center" class="collapse navbar-collapse mt-2" id="navbarResponsive">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item active mb-2">
+                  <a href="{% url 'base' %}" class="nav-link my_tekst text-white">Market</a>
+                </li>
+                  <li class="nav-item active">
+                      <a href="{% url 'index' %}" class="nav-link my_tekst text-white">Manage Order</a>
+                  </li>
+              </ul>
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item mb-2">
+                  <a href="{% url 'logout' %}">
+                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Log out</button>
+                  </a>
+                </li>
+                <li class="nav-item mb-2">
+                  <a href="{% url 'panel' %}">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"><i class="fas fa-user"></i></button>
+                  </a>
+                </li>
+              </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="p-5">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="my-2 mx-auto container text-white rounded text-center bg-dark p-4">
+              <div class="container m-1">
+                <h3>Information about order № {{ order.id }}</h3>
+                  <hr style="background: #FFF;">
+              </div>
+                <div class="container m-1">
+                    <p>Product: {{ order.title }}</p>
+                    <hr style="background: #FFF;">
+                </div>
+                <div class="container m-1">
+                    <p>Count: {{ order.count }}</p>
+                    <hr style="background: #FFF;">
+                </div>
+                <div class="container m-1">
+                    <p>Address: {{ order.address }}</p>
+                    <hr style="background: #FFF;">
+                </div>
+              <div class="container m-1">
+                   <p>Name of client: {{ order.name_of_user }}</p>
+                  <hr style="background: #FFF;">
+              </div>
+              <div class="container m-1">
+                   <p>Phone: {{ order.phone }}</p>
+                  <hr style="background: #FFF;">
+              </div>
+                <div class="container m-1 col-md">
+                {% if order.courier == '0' %}
+                <select id="inputState" name="courier" class="m-auto bg-dark text-white form-control w-50" style="width: 20%;">
+                  <option value="" disabled selected hidden></option>
+                    {% for courier in couriers %}
+                        <option value="{{ courier.id }}">{{ courier.name }}</option>
+                    {% endfor %}
+                </select>
+                {% else %}
+                    <p>Courier: {{ order_courier }}</p>
+                {% endif %}
+              </div>
+                <div class="container m-1 col-md">
+                    {% if order.courier != '0' %}
+                    <select name="status" class="m-auto bg-dark text-white form-control w-50" style="width: 20%;">
+                      <option disabled selected hidden>{{ status }}</option>
+                        <option value="1">Delivering</option>
+                        <option value="2">Delivered</option>
+                        <option value="3">Did not deliver</option>
+                    </select>
+                    {% else %}
+                        <p>Status: Passed, waiting for the courier</p>
+                        <hr style="background: #FFF;">
+                    {% endif %}
+                  </div>
+                <button class="btn btn-success w-100 mt-2" type="submit">Update</button>
+            </div>
+        </form>
+    </main>
+{% endblock %}

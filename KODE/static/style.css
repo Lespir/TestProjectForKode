@@ -45,6 +45,16 @@
   border-radius: 5px;
 }
 
+.manage_order {
+    text-decoration: none !important;
+}
+
+.manage_order:hover {
+    background: #FFF !important;
+    color: #000 !important;
+    border-radius: 5px;
+}
+
 .number-input input[type="number"] {
 -webkit-appearance: textfield;
 -moz-appearance: textfield;

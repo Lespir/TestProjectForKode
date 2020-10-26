@@ -13,12 +13,13 @@ def key_gen():
     return password
 
 
-class KodeUser(models.Model):
+class Manager(models.Model):
     id = models.AutoField('id', primary_key=True, auto_created=True)
-    username = models.CharField('username', max_length=100, unique=True)
+    username = models.CharField('username', max_length=50, unique=True)
+    nickname = models.CharField('nickname', max_length=50, unique=True, blank=True)
     email = models.CharField('email', max_length=100, blank=True)
     password = models.TextField('password', blank=True)
-    invitation_code = models.TextField('invitation_code', default=key_gen)
+    invitation_code = models.CharField('invitation_code', max_length=11, default=key_gen)
 
     def __str__(self):
         return 'Name - {0}, Email - {1}, Invitation Code - {2}'.format(self.username, self.email, self.invitation_code)
@@ -26,7 +27,7 @@ class KodeUser(models.Model):
 
 class Product(models.Model):
     image = models.TextField('image', null=True, blank=True, default='https://mega.nz/file/389GmaQL#OQXKCwFPxAnefvoxmiO5WF6kAlCe3QU76ivJocnNMFQ')
-    title = models.TextField('title')
+    title = models.CharField('title', max_length=50)
     description = models.TextField('description')
     count = models.IntegerField('count', default=0)
 
@@ -36,13 +37,14 @@ class Product(models.Model):
 
 class Order(models.Model):
     id = models.AutoField('id', primary_key=True, auto_created=True)
-    title = models.TextField('title')
-    name_of_user = models.TextField('name_of_user')
-    phone = models.TextField('phone')
+    title = models.CharField('title', max_length=50)
+    name_of_user = models.CharField('name_of_user', max_length=50)
+    phone = models.CharField('phone', max_length=50)
     count = models.IntegerField('count')
     address = models.TextField('address')
     district = models.IntegerField('district')
-    courier = models.TextField('courier')
+    courier = models.IntegerField('courier', blank=True, default=None)
+    status = models.IntegerField('status', default=0)
 
     def __str__(self):
         return 'Number - {0}, Title - {1}, Phone - {2}, Count - {3} Address - {4}, District - {5}, Courier - {6}'.format(self.id, self.title, self.phone, self.count, self.address, self.district, self.courier)
@@ -50,7 +52,7 @@ class Order(models.Model):
 
 class Courier(models.Model):
     id = models.AutoField('id', primary_key=True, auto_created=True)
-    name = models.TextField('name')
+    name = models.CharField('name', max_length=50)
     district = models.IntegerField('district')
 
     def __str__(self):

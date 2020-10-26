@@ -1,6 +1,6 @@
 import datetime
 from django.shortcuts import redirect
-from .models import KodeUser
+from .models import Manager
 
 
 def check_session(func):
@@ -17,7 +17,7 @@ def login_require(func):
     def decorator(*args, **kwargs):
         if args[0].session.get('auth'):
             try:
-                KodeUser.objects.get(id=args[0].session['id'])
+                Manager.objects.get(id=args[0].session['id'])
             except Exception as e:
                 print(e)
                 args[0].session['auth'] = 0
