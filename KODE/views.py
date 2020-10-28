@@ -3,7 +3,7 @@ from .models import Manager, Product, Order, Courier
 from .decorators import *
 from hashlib import sha256
 from mega import Mega
-import os, random
+import random
 
 mega = Mega()
 
@@ -11,23 +11,16 @@ mega = Mega()
 @check_session
 def base(request):  # market page
     products = Product.objects.all()
-    params = {
-        'auth': request.session['auth'],
-        'products': products,
-    }
-    return render(request, 'market.html', params)
+    return render(request, 'market.html', {'auth': request.session['auth'],
+                                           'products': products})
 
 
 @check_session
 @login_require
 def index(request):  # management order
     orders = Order.objects.all()
-    params = {
-        'auth': request.session['auth'],
-        'orders': orders,
-
-    }
-    return render(request, 'manage.html', params)
+    return render(request, 'manage.html', {'auth': request.session['auth'],
+                                           'orders': orders})
 
 
 @check_session
@@ -42,7 +35,8 @@ def panel(request):  # panel for changing personal data
             if request.POST['new_pass'] != '':
                 if request.POST['confirm_pass'] != '':
                     if request.POST['new_pass'] == request.POST['confirm_pass']:
-                        if user_data.password != sha256(bytes(request.POST['confirm_pass'], 'utf-8')).hexdigest():
+                        if user_data.password != sha256(
+                                bytes(request.POST['confirm_pass'], 'utf-8')).hexdigest():  # change the password
                             user_data.password = sha256(bytes(request.POST['confirm_pass'], 'utf-8')).hexdigest()
                             user_data.save()
                             cool_news = 'Data successfully changed'
@@ -93,33 +87,25 @@ def panel(request):  # panel for changing personal data
 
 
 @check_session
-def login(request):
+def login(request):  # system of login
     if request.method == 'GET':
-        params = {
-            'auth': request.session['auth'],
-        }
-        return render(request, 'login.html', params)
+        return render(request, 'login.html', {'auth': request.session['auth']})
     else:
         login = request.POST['login']
         password_hash = sha256(bytes(request.POST['password'], 'utf-8')).hexdigest()
         try:
-            user = Manager.objects.get(nickname=login)
+            user = Manager.objects.get(nickname=login)  # trying to get user with this name
         except Exception as e:
-            print(e)
-            params = {
-                'error': 'Failed to authenticate'
-            }
-            return render(request, 'login.html', params)
-        else:
+            error = 'Failed to authenticate'
+            return render(request, 'login.html', {'error': error})
+        else:   # if user had found, change him session auth 0 as 1
             if password_hash == user.password:
                 request.session['auth'] = 1
                 request.session['id'] = user.id
                 return redirect('index')
             else:
-                params = {
-                    'error': 'Failed to authenticate',
-                }
-                return render(request, 'login.html', params)
+                error = 'Failed to authenticate'
+                return render(request, 'login.html', {'error': error})
 
 
 @check_session
@@ -129,10 +115,8 @@ def logout(request):
 
 
 @check_session
-def first_time(request):
-    params = {
-        'error': '',
-    }
+def first_time(request):   # if user has not account, he should create it with help a special code
+    error = ''
     if request.method == 'POST':
         code = request.POST['code']
         nickname = request.POST['nickname']
@@ -146,26 +130,19 @@ def first_time(request):
                     user_data.save()
                     return redirect('login')
                 else:
-                    params = {
-                        'error': 'The second password is not correctly entered',
-                    }
+                    error = 'The second password is not correctly entered'
             else:
-                params = {
-                    'error': 'Nickname is already taken'
-                }
+                error = 'Nickname is already taken'
         except Exception as e:
-            params = {
-                'error': 'Incorrect invitation code',
-            }
-    return render(request, 'firsttime.html', params)
+            error = 'Incorrect invitation code'
+    return render(request, 'firsttime.html', {'error': error})
 
 
 @check_session
 @login_require
 def add_product(request):
-    params = {
-        'error': '',
-    }
+    error = ''
+    cool_mess = ''
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
@@ -176,9 +153,7 @@ def add_product(request):
                                                  description=description,
                                                  count=count)
                 product.save()
-                params = {
-                    'cool_mess': 'Product successfully added',
-                }
+                cool_mess = 'Product successfully added'
             else:
                 try:
                     # image = request.FILES['file']
@@ -186,26 +161,20 @@ def add_product(request):
                     # with open(file_path, 'wb') as f:   # temp save image
                     #     for chunk in image.chunks():
                     #         f.write(chunk)
-                    # m = mega.login('alecsey.o.nikitin@gmail.com', '62195111aon$')
+                    # m = mega.login('email', 'password')
                     # folder = m.find('KODE')
                     # file = m.upload(file_path, folder[0])   # upload image to MEGA
                     product = Product.objects.create(title=title, description=description,
-                                                     count=count)   # image='https://mega.nz/file/' + m.get_upload_link(file).split('#!')[1]
-                                                                    # I will add it, when i started user drive (Mega or Google)
+                                                     count=count)
+                    # I will add it, when i started user drive (Mega or Google)
                     product.save()
                     # os.remove(file_path)
-                    params = {
-                        'cool_mess': 'Product successfully added',
-                    }
+                    cool_mess = 'Product successfully added'
                 except Exception as e:
-                    params = {
-                        'error': 'Failed to add product',
-                    }
+                    error = 'Failed to add product'
         else:
-            params = {
-                'error': 'Product name already exists'
-            }
-    return render(request, 'add_product.html', params)
+            error = 'Product name already exists'
+    return render(request, 'add_product.html', {'error': error, 'cool_mess': cool_mess})
 
 
 def product_info(request):
@@ -218,9 +187,11 @@ def product_info(request):
         count = request.POST['quantity']
         if product.count < int(count):
             error = 'Not enough products in the storage'
-            return render(request, 'product.html', {'error': error, 'product': product, 'auth': request.session['auth']})
+            return render(request, 'product.html',
+                          {'error': error, 'product': product, 'auth': request.session['auth']})
         else:
-            order = Order.objects.create(title=name, phone=phone, name_of_user=name_of_user, count=count, address=address, district=random.randint(1, 2))
+            order = Order.objects.create(title=name, phone=phone, name_of_user=name_of_user, count=count, courier=0,
+                                         address=address, district=random.randint(1, 2))
             order.save()
             Product.objects.filter(title=name).update(count=product.count - int(count))
             return redirect('base')
@@ -242,7 +213,6 @@ def order_info(request):
         couriers = ''
     if request.POST.get('courier'):
         order.courier = request.POST.get('courier')
-        order.status = 1
         order.save()
     elif request.POST.get('status'):
         order.status = request.POST.get('status')
@@ -254,17 +224,14 @@ def order_info(request):
     except Exception as e:
         order_courier = ''
     if order.status == 0:
-        status = 'Passed'   # Принят
+        status = 'Passed'  # Принят
     elif order.status == 1:
-        status = 'Delivering'   # Доставляется
+        status = 'Delivering'  # Доставляется
     elif order.status == 2:
         status = 'Delivered'  # Доставлен
     elif order.status == 3:
-        status = 'Did not deliver'   # Не даставлен
+        status = 'Did not deliver'  # Не даставлен
     else:
         status = ''
-    return render(request, 'order_info.html', {'order': order, 'status': status, 'couriers': couriers, 'order_courier': order_courier})
-
-
-def buy_product(product, count, name_of_user, address):
-    pass
+    return render(request, 'order_info.html',
+                  {'order': order, 'status': status, 'couriers': couriers, 'order_courier': order_courier})

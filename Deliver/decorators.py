@@ -1,8 +1,8 @@
 from django.shortcuts import redirect
-from .models import Manager
+from KODE.models import Courier
 
 
-def check_session(func):
+def check_session_cour(func):
     def decorator(*args, **kwargs):
         if 'auth' not in args[0].session.keys():
             args[0].session['auth'] = 0
@@ -12,16 +12,16 @@ def check_session(func):
     return decorator
 
 
-def login_require(func):
+def login_require_cour(func):
     def decorator(*args, **kwargs):
         if args[0].session.get('auth'):
             try:
-                Manager.objects.get(id=args[0].session['id'])
+                Courier.objects.get(id=args[0].session['id'])
             except Exception as e:
                 print(e)
                 args[0].session['auth'] = 0
-                return redirect('login')
+                return redirect('cour_login')
             else:
                 return func(*args, **kwargs)
-        return redirect('login')
+        return redirect('cour_login')
     return decorator

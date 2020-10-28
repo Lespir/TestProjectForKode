@@ -1,9 +1,8 @@
-{% extends "default.html" %}
+{% extends "deliver/default.html" %}
 {% block content %}
 {% load static %}
-  <main style="padding: 13%;">
-    <div class="bg-dark rounded-lg" style="width: 95%; margin: 50px auto; max-width: 500px;">
-      <div class="p-2" style="width: 95%; margin: 50px auto;">
+    <table align="center" style="height: 100%; width: 90%;">
+      <td  class="align-middle">
         <h4 class="text-center mb-4 text-white"> Registration Form </h4>
         <form method="POST" class="text-white">
           {% csrf_token %}
@@ -23,11 +22,10 @@
           <div class="form-inline">
             <button type="submit" class="btn btn-success">Create Account</button>
             <div class="ml-auto">
-              <a class="btn btn-primary" href="{% url 'login' %}">Log in</a>
+              <a class="btn btn-primary" href="{% url 'cour_login' %}">Log in</a>
             </div>
           </div>
         </form>
-      </div>
-    </div>
-  </main>
+      </td>
+    </table>
 {% endblock %}

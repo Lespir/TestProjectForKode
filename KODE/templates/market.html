@@ -43,13 +43,13 @@
           <div class="row">
             {% for product in products %}
                   <div class="col-md-4">
-                    <div class="card mb-4 scale h-50 bg-dark text-white shadow-sm">
+                    <div class="card mb-4 scale bg-dark text-white shadow-sm">
                     <a class="" href="product/{{ product.title }}">
                         <img class="img-fluid prodimg rounded" src='../static/image/back.png' alt="">
                     </a>
-                      <div class="card-body container-fluid">
+                      <div class="card-body">
                         <p class="card-title text-center h4">{{ product.title }}</p>
-                        <p class="card-text mb-5 d-inline-block">{{ product.description }}</p>
+                        <p class="card-text mb-5 text-break">{{ product.description }}</p>
                         <div style="position: absolute; top: 10px; right: 15px;">
                           <small class="ml-auto text-muted">count - {{ product.count }}</small>
                         </div>

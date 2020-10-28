@@ -16,7 +16,7 @@ def key_gen():
 class Manager(models.Model):
     id = models.AutoField('id', primary_key=True, auto_created=True)
     username = models.CharField('username', max_length=50, unique=True)
-    nickname = models.CharField('nickname', max_length=50, unique=True, blank=True)
+    nickname = models.CharField('nickname', max_length=50, blank=True)
     email = models.CharField('email', max_length=100, blank=True)
     password = models.TextField('password', blank=True)
     invitation_code = models.CharField('invitation_code', max_length=11, default=key_gen)
@@ -38,12 +38,12 @@ class Product(models.Model):
 class Order(models.Model):
     id = models.AutoField('id', primary_key=True, auto_created=True)
     title = models.CharField('title', max_length=50)
-    name_of_user = models.CharField('name_of_user', max_length=50)
+    name_of_user = models.CharField('name_of_user', max_length=60)
     phone = models.CharField('phone', max_length=50)
     count = models.IntegerField('count')
     address = models.TextField('address')
     district = models.IntegerField('district')
-    courier = models.IntegerField('courier', blank=True, default=None)
+    courier = models.TextField('courier', blank=True, null=True)
     status = models.IntegerField('status', default=0)
 
     def __str__(self):
@@ -53,7 +53,10 @@ class Order(models.Model):
 class Courier(models.Model):
     id = models.AutoField('id', primary_key=True, auto_created=True)
     name = models.CharField('name', max_length=50)
+    nickname = models.CharField('nickname', max_length=50, blank=True)
+    password = models.TextField('password', blank=True)
     district = models.IntegerField('district')
+    invitation_code = models.CharField('invitation_code', max_length=11, default=key_gen)
 
     def __str__(self):
-        return 'Name - {0}, District - {1}'.format(self.name, self.district)
+        return 'ID - {0} Name - {1}, District - {2}, Invitation Code - {3}'.format(self.id, self.name, self.district, self.invitation_code)

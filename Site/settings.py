@@ -25,19 +25,21 @@ SECRET_KEY = 'cu1fuhne$k_s^vg)-v*kck53((%70r+8$gb98j^9-!w!$r6e&-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '192.168.1.70']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'KODE',
+    'Deliver',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework_swagger',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +125,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }

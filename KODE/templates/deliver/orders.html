@@ -1,0 +1,31 @@
+{% extends "deliver/default.html" %}
+{% block content %}
+{% load static %}
+  <div class="p-2 form-inline">
+    <ul class="ml-auto">
+      <a  href="{% url 'cour_logout' %}">
+      <button class="btn btn-danger" type="submit">Log out</button>
+    </a>
+    <a href="{% url 'cour_panel' %}">
+      <button class="btn btn-primary" type="submit"><i class="fas fa-user"></i></button>
+    </a>
+    </ul>
+  </div>
+    {% for order in orders %}
+    <div class="mx-4">
+      <a class="text-white" href="order_info/{{ order.id }}">
+        <div class="text-fluid my-2 mx-auto form-inline manage_order text-white rounded text-center p-4 row {% if order.status == 0 %} bg-secondary {% elif order.status == 1 %} bg-primary {% elif order.status == 2 %} bg-success {% elif order.status == 3 %} bg-danger {% endif %}">
+          <div class="m-auto">
+            <p>№ {{ order.id }}</p>
+          </div>
+          <div class="m-auto">
+               <p>{{ order.phone }}</p>
+          </div>
+          <div class=" m-auto">
+               <p class="text-fluid">{{ order.address }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+{% endblock %}

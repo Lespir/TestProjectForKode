@@ -1,0 +1,47 @@
+{% extends "deliver/default.html" %}
+{% block content %}
+{% load static %}
+  <div class="p-2 form-inline">
+    <ul class="ml-0 mr-auto">
+        <a  href="{% url 'orders' %}"><button class="btn btn-secondary" type="submit">👈 Back</button></a>
+    </ul>
+    <ul class="ml-auto">
+        <a  href="{% url 'cour_logout' %}"><button class="btn btn-danger" type="submit">Log out</button></a>
+        <a href="{% url 'cour_panel' %}"><button class="btn btn-primary" type="submit"><i class="fas fa-user"></i></button></a>
+    </ul>
+  </div>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="my-2 mx-auto text-white rounded text-center bg-dark p-4">
+          <div class="m-1">
+            <h3>Information about order № {{ order.id }}</h3>
+              <hr style="background: #FFF;">
+          </div>
+            <div class="m-1">
+                <p>Product: {{ order.title }}</p>
+                <hr style="background: #FFF;">
+            </div>
+            <div class="m-1">
+                <p>Count: {{ order.count }}</p>
+                <hr style="background: #FFF;">
+            </div>
+            <div class="m-1">
+                <p>Address: {{ order.address }}</p>
+                <hr style="background: #FFF;">
+            </div>
+          <div class="m-1">
+               <p>Name of client: {{ order.name_of_user }}</p>
+              <hr style="background: #FFF;">
+          </div>
+          <div class="m-1">
+               <p>Phone: {{ order.phone }}</p>
+              <hr style="background: #FFF;">
+          </div>
+            {% if order.status != 2 %}
+            <button type="submit" {% if order.status == 1 %} hidden {% endif %} value="1" name="button" class="btn w-100 btn-primary mt-2">Took</button>
+            <button type="submit" {% if order.status == 2 %} hidden {% endif %} value="2" name="button" class="btn w-100 btn-success mt-2">Gave</button>
+            <button type="submit" {% if order.status == 3 %} hidden {% endif %} value="3" name="button" class="btn w-100 btn-danger mt-2">Lose</button>
+            {% endif %}
+        </div>
+    </form>
+{% endblock %}
